@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة إدارة النتائج والامتحانات</title>
+    <title>لوحة إدارة النتائج والامتحانات والفيديوهات</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -53,6 +53,11 @@
                 <li class="mr-2" role="presentation">
                     <button id="management-tab" class="inline-block p-4 border-b-2 border-transparent rounded-t-lg font-bold text-gray-500 hover:text-gray-600 hover:border-gray-300 transition" type="button" role="tab" aria-selected="false" onclick="showTab('management')">
                         إدارة الامتحانات
+                    </button>
+                </li>
+                <li class="mr-2" role="presentation">
+                    <button id="videos-tab" class="inline-block p-4 border-b-2 border-transparent rounded-t-lg font-bold text-gray-500 hover:text-gray-600 hover:border-gray-300 transition" type="button" role="tab" aria-selected="false" onclick="showTab('videos')">
+                        🎬 إدارة الفيديوهات
                     </button>
                 </li>
             </ul>
@@ -223,10 +228,73 @@
                 </form>
             </div>
 
+
         </div>
 
+        <div id="videos-content" class="tab-content hidden">
+
+            <div class="bg-white p-6 sm:p-8 rounded-xl shadow-lg border border-purple-200 mb-8">
+                <h3 class="text-xl font-bold mb-4 text-purple-800">🎥 إضافة فيديو جديد وتوليد أكواد</h3>
+                <form id="addVideoForm" class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <input type="text" id="videoName" placeholder="اسم الفيديو" required class="bg-gray-100 p-3 rounded-lg border focus:ring-2 focus:ring-purple-500">
+                        <input type="text" id="videoLink" placeholder="رابط الفيديو (أو YouTube Embed ID)" required class="bg-gray-100 p-3 rounded-lg border focus:ring-2 focus:ring-purple-500">
+                        <select id="videoClass" required class="bg-gray-100 p-3 rounded-lg border focus:ring-2 focus:ring-purple-500">
+                            <option value="s1">أولى ثانوي</option>
+                            <option value="s2">تانية ثانوي</option>
+                            <option value="s3">تالتة ثانوي</option>
+                        </select>
+                    </div>
+                    <button type="submit" id="addVideoBtn" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 rounded-lg transition shadow-md">
+                        حفظ الفيديو وتوليد 1000 كود تلقائياً 🚀
+                    </button>
+                </form>
+            </div>
+
+            <div class="bg-white p-6 sm:p-8 rounded-xl shadow-lg border border-gray-100">
+                <h3 class="text-xl font-bold mb-4 text-gray-800">مكتبة الفيديوهات</h3>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-purple-50">
+                            <tr>
+                                <th class="px-4 py-3 text-right text-xs font-medium text-purple-800 uppercase">اسم الفيديو</th>
+                                <th class="px-4 py-3 text-right text-xs font-medium text-purple-800 uppercase">الصف</th>
+                                <th class="px-4 py-3 text-right text-xs font-medium text-purple-800 uppercase">التاريخ</th>
+                                <th class="px-4 py-3 text-center text-xs font-medium text-purple-800 uppercase">الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="videosTableBody" class="divide-y divide-gray-200">
+                            <tr>
+                                <td colspan="4" class="text-center py-4 text-gray-500">اضغط على تبويب "إدارة الفيديوهات" للتحميل</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </main>
 
+    <div id="codesModal" class="fixed inset-0 z-50 hidden overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true" onclick="closeCodesModal()"></div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div class="inline-block align-bottom bg-white rounded-lg text-right overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <h3 class="text-lg leading-6 font-medium text-gray-900 mb-2" id="modal-title">أكواد الفيديو</h3>
+                    <p class="text-sm text-gray-500 mb-4">هذه هي الأكواد المولدة لهذا الفيديو. يمكنك نسخها ولصقها في ملف خارجي.</p>
+                    <textarea id="codesArea" rows="10" class="w-full p-2 border border-gray-300 rounded-md font-mono text-sm bg-gray-50 text-left" readonly></textarea>
+                </div>
+                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                    <button type="button" onclick="copyCodes()" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none sm:ml-3 sm:w-auto sm:text-sm">
+                        نسخ الكل
+                    </button>
+                    <button type="button" onclick="closeCodesModal()" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                        إغلاق
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
     <script>
         // *************************************************************
         // ** ⚠️ يجب استبدال القيم Placeholder بمفاتيحك الحقيقية ⚠️ **
@@ -238,6 +306,10 @@
         const TABLE_RESULTS = "quiz_results";
         const TABLE_QUIZZES = "quizzes";
         const TABLE_QUESTIONS = "questions";
+        const TABLE_VIDEOS = "videos";
+        const TABLE_CODES = "video_codes";
+        const SUPABASE_KEY = SUPABASE_SERVICE_KEY; // تم توحيد الاسم للمفتاح الإداري
+
         // *************************************************************
 
         const resultsTableBody = document.getElementById('resultsTableBody');
@@ -268,10 +340,9 @@
         };
 
         // -----------------------------------------------------------
-        // 1. نظام التبويبات (Tabs) - تم تصحيح خطأ ReferenceError هنا
+        // 1. نظام التبويبات (Tabs)
         // -----------------------------------------------------------
 
-        // **ملاحظة:** تم إضافة الدالة window.showTab لضمان الوصول العالمي من HTML
         window.showTab = function(tabName) {
             document.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
             document.querySelectorAll('#tabs button').forEach(button => {
@@ -279,21 +350,60 @@
                 button.classList.add('border-transparent', 'text-gray-500');
             });
 
-            document.getElementById(`${tabName}-content`).classList.remove('hidden');
-            document.getElementById(`${tabName}-tab`).classList.add('border-indigo-600', 'text-indigo-600');
-            document.getElementById(`${tabName}-tab`).classList.remove('border-transparent', 'text-gray-500');
+            const activeContent = document.getElementById(`${tabName}-content`);
+            const activeTab = document.getElementById(`${tabName}-tab`);
+
+            if (activeContent) activeContent.classList.remove('hidden');
+            if (activeTab) {
+                activeTab.classList.add('border-indigo-600', 'text-indigo-600');
+                activeTab.classList.remove('border-transparent', 'text-gray-500');
+            }
 
             if (tabName === 'management') {
                 fetchQuizzes();
+            } else if (tabName === 'videos') {
+                fetchVideos();
             } else {
                 fetchResults();
             }
         }
 
-        // -----------------------------------------------------------
-        // 2. إدارة النتائج (عرض النتائج)
-        // -----------------------------------------------------------
+        // ------------------------------------------
+        // 2. دوال Supabase المساعدة (لتبسيط العمليات ومعالجة الأخطاء)
+        // ------------------------------------------
+        async function sbFetch(tableName, method = 'GET', body = null, select = '*') {
+            const options = {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'apikey': SUPABASE_KEY,
+                    'Authorization': `Bearer ${SUPABASE_KEY}`,
+                }
+            };
+            if (body) options.body = JSON.stringify(body);
+            if (method === 'POST') options.headers['Prefer'] = 'return=representation';
 
+            // ✅ تصحيح: إضافة أمر الترتيب فقط لجدول الفيديوهات (الذي يحتوي على created_at)
+            let url = `${SUPABASE_URL}/rest/v1/${tableName}?select=${select}`;
+            if (method !== 'POST' && (tableName === TABLE_VIDEOS || tableName === TABLE_QUIZZES || tableName === TABLE_RESULTS)) {
+                url += `&order=created_at.desc`;
+            }
+
+            const response = await fetch(url, options);
+
+            // تحسين معالجة الأخطاء
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`Error ${response.status}: ${errorText || response.statusText}`);
+            }
+
+            return method !== 'DELETE' ? await response.json() : null;
+        }
+
+
+        // -----------------------------------------------------------
+        // 3. إدارة النتائج (عرض النتائج)
+        // -----------------------------------------------------------
         async function fetchResults() {
             resultsTableBody.innerHTML = '<tr><td colspan="7" class="px-6 py-4 text-center text-gray-500">... جاري تحميل النتائج ...</td></tr>';
             resultsCountSpan.textContent = '0';
@@ -367,13 +477,11 @@
         }
 
         // -----------------------------------------------------------
-        // 3. إدارة الامتحانات (إضافة وتفعيل/إغلاق) - تم تصحيح خطأ SyntaxError هنا
+        // 4. إدارة الامتحانات
         // -----------------------------------------------------------
-
         async function fetchQuizzes() {
             quizListTableBody.innerHTML = '<tr><td colspan="6" class="px-6 py-4 text-center text-gray-500">... جاري تحميل الامتحانات ...</td></tr>';
             try {
-                // نطلب عدد الأسئلة كـ COUNT ضمن الاستعلام
                 const url = `${SUPABASE_URL}/rest/v1/${TABLE_QUIZZES}?select=id,quiz_name,class_name,is_active,created_at,questions(count)&order=created_at.desc`;
                 const response = await fetch(url, {
                     method: 'GET',
@@ -409,7 +517,6 @@
                 const buttonText = isActive ? 'إغلاق' : 'تفعيل';
                 const buttonColor = isActive ? 'bg-red-500 hover:bg-red-600' : 'bg-green-500 hover:bg-green-600';
 
-                // **تم تصحيح هذا السطر: استخدام Optional Chaining (.?) لحل خطأ SyntaxError**
                 const questionCount = quiz.questions[0] ? quiz.questions[0].count : 0;
 
                 const row = document.createElement('tr');
@@ -431,7 +538,6 @@
                 quizListTableBody.appendChild(row);
             });
         }
-
         async function toggleQuizStatus(quizId, currentStatus) {
             if (!confirm(`هل أنت متأكد من تغيير حالة هذا الامتحان؟`)) return;
 
@@ -462,12 +568,10 @@
                 console.error('Error toggling quiz status:', error);
             }
         }
-
         showNewQuizFormBtn.addEventListener('click', () => {
             newQuizSection.classList.remove('hidden');
             questionAdditionSection.classList.add('hidden');
         });
-
         newQuizForm.addEventListener('submit', async(e) => {
             e.preventDefault();
             const quizName = document.getElementById('newQuizName').value.trim();
@@ -524,7 +628,6 @@
                 button.disabled = false;
             }
         });
-
         newQuestionForm.addEventListener('submit', async(e) => {
             e.preventDefault();
 
@@ -580,7 +683,6 @@
                 button.disabled = false;
             }
         });
-
         finishQuizBtn.addEventListener('click', () => {
             if (currentQuestionCount === 0) {
                 if (!confirm("لم يتم إضافة أي أسئلة لهذا الامتحان. هل تريد إنهاء العملية والعودة؟")) return;
@@ -594,6 +696,177 @@
             fetchQuizzes();
             alert('تم إنهاء عملية إضافة الأسئلة بنجاح. يمكنك تفعيل الامتحان من القائمة.');
         });
+
+        // ------------------------------------------
+        // 5. منطق إدارة الفيديوهات (الجديد)
+        // ------------------------------------------
+
+        // 5.1 دالة تحويل الرابط إلى Embed ID
+        function extractYoutubeId(url) {
+            const regex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+            const match = url.match(regex);
+            return (match && match[1].length === 11) ? match[1] : url.trim();
+        }
+
+        // 5.2 جلب وعرض الفيديوهات في الجدول
+        async function fetchVideos() {
+            const tbody = document.getElementById('videosTableBody');
+            tbody.innerHTML = '<tr><td colspan="4" class="text-center py-4 text-purple-600 animate-pulse">... جاري تحميل الفيديوهات ...</td></tr>';
+
+            try {
+                // استخدام sbFetch لجدول الفيديوهات (الذي يحتوي على created_at)
+                const videos = await sbFetch(TABLE_VIDEOS, 'GET', null, '*');
+
+                tbody.innerHTML = '';
+                if (videos.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="4" class="px-6 py-4 text-center text-gray-500">لا توجد فيديوهات مضافة بعد.</td></tr>';
+                    return;
+                }
+
+                videos.forEach(video => {
+                    const row = document.createElement('tr');
+                    row.className = 'hover:bg-purple-50 transition';
+                    row.innerHTML = `
+                <td class="px-4 py-3 whitespace-nowrap font-bold text-gray-800">${video.video_name}</td>
+                <td class="px-4 py-3 whitespace-nowrap text-purple-600">${classNamesMap[video.class_name]}</td>
+                <td class="px-4 py-3 whitespace-nowrap text-gray-500 text-sm">${new Date(video.created_at).toLocaleDateString('ar-EG')}</td>
+                <td class="px-4 py-3 whitespace-nowrap text-center">
+                    <button onclick="viewCodes(${video.id})" class="bg-indigo-500 hover:bg-indigo-600 text-white px-3 py-1 rounded text-sm mx-1">👁️ عرض الأكواد</button>
+                    <button onclick="deleteVideo(${video.id})" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm mx-1">حذف</button>
+                </td>
+            `;
+                    tbody.appendChild(row);
+                });
+
+            } catch (error) {
+                console.error('Error fetching videos:', error);
+                tbody.innerHTML = `<tr><td colspan="4" class="px-6 py-4 text-center text-red-500">خطأ في جلب البيانات: ${error.message}</td></tr>`;
+            }
+        }
+
+        // 5.3 دالة توليد الأكواد وإضافة الفيديو
+        document.getElementById('addVideoForm').addEventListener('submit', async(e) => {
+            e.preventDefault();
+            const btn = document.getElementById('addVideoBtn');
+            const originalText = btn.textContent;
+
+            const name = document.getElementById('videoName').value;
+            const rawLink = document.getElementById('videoLink').value;
+            const className = document.getElementById('videoClass').value;
+
+            // استخدام الدالة الجديدة لاستخراج ID الفيديو
+            const link = extractYoutubeId(rawLink);
+
+            if (link.length !== 11) {
+                alert('الرجاء التأكد من إدخال رابط يوتيوب صالح (يجب أن يحتوي على معرّف فيديو صالح).');
+                return;
+            }
+
+
+            btn.disabled = true;
+            btn.textContent = '⏳ جاري الحفظ وتوليد 1000 كود... قد يستغرق الأمر بضع ثوانٍ';
+
+            try {
+                // 1. إضافة الفيديو والحصول على الـ ID
+                const videoData = await sbFetch(TABLE_VIDEOS, 'POST', {
+                    video_name: name,
+                    video_link: link, // سيتم تخزين الـ ID القصير هنا
+                    class_name: className
+                });
+
+                // التحقق الإلزامي من الـ ID المُرجع
+                if (!videoData || videoData.length === 0 || !videoData[0].id) {
+                    throw new Error("فشل في الحصول على معرّف الفيديو (Video ID) بعد الحفظ. تحقق من سياسات RLS.");
+                }
+
+                const newVideoId = videoData[0].id;
+
+                // 2. توليد 1000 كود في المتصفح
+                const codesPayload = [];
+                for (let i = 0; i < 1000; i++) {
+                    const code = Math.random().toString(36).substring(2, 8).toUpperCase();
+                    codesPayload.push({
+                        video_id: newVideoId,
+                        code: code
+                    });
+                }
+
+                // 3. إرسال الأكواد دفعة واحدة (Bulk Insert)
+                await sbFetch(TABLE_CODES, 'POST', codesPayload, '*'); // استخدام * لتخطي الفرز في جدول الأكواد
+
+                alert('✅ تم إضافة الفيديو وتوليد 1000 كود بنجاح!');
+                document.getElementById('addVideoForm').reset();
+                fetchVideos();
+
+            } catch (error) {
+                alert('فشل في العملية: ' + error.message + '. تأكد من إعداد جداول Supabase بشكل صحيح.');
+                console.error(error);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = originalText;
+            }
+        });
+
+        // 5.4 عرض الأكواد في المودال
+        window.viewCodes = async function(videoId) {
+            const modal = document.getElementById('codesModal');
+            const area = document.getElementById('codesArea');
+            area.value = "جاري جلب الأكواد...";
+            modal.classList.remove('hidden');
+
+            try {
+                // جلب الأكواد مباشرة لضمان عدم تأثر الاستعلام بالترتيب العام
+                const codesResponse = await fetch(`${SUPABASE_URL}/rest/v1/${TABLE_CODES}?select=code&video_id=eq.${videoId}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'apikey': SUPABASE_KEY,
+                        'Authorization': `Bearer ${SUPABASE_KEY}`,
+                    }
+                });
+                if (!codesResponse.ok) throw new Error(codesResponse.statusText);
+                const codes = await codesResponse.json();
+
+
+                const codesText = codes.map(c => c.code).join('\n');
+                area.value = codesText;
+            } catch (error) {
+                area.value = "حدث خطأ أثناء جلب الأكواد.";
+                console.error('Error viewing codes:', error);
+            }
+        }
+
+        // 5.5 نسخ الأكواد
+        window.copyCodes = function() {
+            const area = document.getElementById('codesArea');
+            area.select();
+            document.execCommand('copy');
+            alert("تم نسخ جميع الأكواد للحافظة!");
+        }
+
+        // 5.6 إغلاق المودال
+        window.closeCodesModal = function() {
+            document.getElementById('codesModal').classList.add('hidden');
+        }
+
+        // 5.7 دالة الحذف
+        window.deleteVideo = async function(id) {
+            if (!confirm("هل أنت متأكد من حذف هذا الفيديو؟ سيتم حذف جميع الأكواد الـ 1000 المرتبطة به بشكل نهائي!")) return;
+            try {
+                await fetch(`${SUPABASE_URL}/rest/v1/${TABLE_VIDEOS}?id=eq.${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'apikey': SUPABASE_KEY,
+                        'Authorization': `Bearer ${SUPABASE_KEY}`
+                    }
+                });
+                alert("✅ تم حذف الفيديو والأكواد بنجاح.");
+                fetchVideos();
+            } catch (e) {
+                alert("❌ فشل في الحذف. راجع Console.");
+                console.error('Error deleting video:', e);
+            }
+        }
 
         // ربط أحداث التصفية للنتائج
         applyFilterBtn.addEventListener('click', fetchResults);
