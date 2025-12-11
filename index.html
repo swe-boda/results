@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 
+<!--جديد-->
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,13 +25,20 @@
             background-image: linear-gradient(to right, #4c51bf, #6b46c1);
         }
         
-        .table-container::-webkit-scrollbar {
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
             height: 8px;
         }
-        
-        .table-container::-webkit-scrollbar-thumb {
-            background-color: #a0aec0;
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888; 
             border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555; 
         }
     </style>
 </head>
@@ -94,7 +103,7 @@
 
             <div class="bg-white p-6 sm:p-8 rounded-xl shadow-lg border border-gray-100">
                 <h2 class="text-2xl font-bold mb-4 text-gray-800">قائمة النتائج (<span id="resultsCount">0</span> نتيجة)</h2>
-                <div class="table-container overflow-x-auto">
+                <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
                             <tr>
@@ -177,36 +186,21 @@
                 <h3 class="text-xl font-bold mb-6 text-gray-800">إضافة السؤال <span id="currentQuestionNumber">1</span> إلى امتحان: <span id="currentQuizName" class="text-indigo-600"></span></h3>
                 <form id="newQuestionForm" class="space-y-4">
                     <input type="hidden" id="currentQuizId">
-
                     <div>
                         <label for="questionText" class="block text-sm font-medium text-gray-700 mb-2">نص السؤال</label>
                         <textarea id="questionText" rows="3" required class="w-full bg-gray-100 p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
                     </div>
-
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label for="choiceA" class="block text-sm font-medium text-gray-700 mb-2">الاختيار أ</label>
-                            <input type="text" id="choiceA" required class="w-full bg-gray-100 p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                        </div>
-                        <div>
-                            <label for="choiceB" class="block text-sm font-medium text-gray-700 mb-2">الاختيار ب</label>
-                            <input type="text" id="choiceB" required class="w-full bg-gray-100 p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                        </div>
-                        <div>
-                            <label for="choiceC" class="block text-sm font-medium text-gray-700 mb-2">الاختيار ج</label>
-                            <input type="text" id="choiceC" required class="w-full bg-gray-100 p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                        </div>
-                        <div>
-                            <label for="choiceD" class="block text-sm font-medium text-gray-700 mb-2">الاختيار د</label>
-                            <input type="text" id="choiceD" required class="w-full bg-gray-100 p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                        </div>
+                        <div><label class="block text-sm mb-1">الاختيار أ</label><input type="text" id="choiceA" required class="w-full bg-gray-100 p-3 rounded border"></div>
+                        <div><label class="block text-sm mb-1">الاختيار ب</label><input type="text" id="choiceB" required class="w-full bg-gray-100 p-3 rounded border"></div>
+                        <div><label class="block text-sm mb-1">الاختيار ج</label><input type="text" id="choiceC" required class="w-full bg-gray-100 p-3 rounded border"></div>
+                        <div><label class="block text-sm mb-1">الاختيار د</label><input type="text" id="choiceD" required class="w-full bg-gray-100 p-3 rounded border"></div>
                     </div>
-
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label for="correctAnswer" class="block text-sm font-medium text-gray-700 mb-2">الإجابة الصحيحة</label>
                             <select id="correctAnswer" required class="w-full bg-gray-100 p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                                <option value="">-- اختر الإجابة الصحيحة --</option>
+                                <option value="">-- اختر --</option>
                                 <option value="A">الاختيار أ</option>
                                 <option value="B">الاختيار ب</option>
                                 <option value="C">الاختيار ج</option>
@@ -218,21 +212,13 @@
                             <input type="text" id="explanation" class="w-full bg-gray-100 p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500">
                         </div>
                     </div>
-
-                    <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg shadow-md transition">
-                        حفظ السؤال والانتقال للسؤال التالي
-                    </button>
-                    <button type="button" id="finishQuizBtn" class="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-3 rounded-lg shadow-md transition">
-                        إنهاء إضافة الأسئلة (والعودة للقائمة)
-                    </button>
+                    <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg shadow-md transition">حفظ السؤال والانتقال للسؤال التالي</button>
+                    <button type="button" id="finishQuizBtn" class="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-3 rounded-lg shadow-md transition">إنهاء إضافة الأسئلة (والعودة للقائمة)</button>
                 </form>
             </div>
-
-
         </div>
 
         <div id="videos-content" class="tab-content hidden">
-
             <div class="bg-white p-6 sm:p-8 rounded-xl shadow-lg border border-purple-200 mb-8">
                 <h3 class="text-xl font-bold mb-4 text-purple-800">🎥 إضافة فيديو جديد وتوليد أكواد</h3>
                 <form id="addVideoForm" class="space-y-4">
@@ -264,9 +250,7 @@
                             </tr>
                         </thead>
                         <tbody id="videosTableBody" class="divide-y divide-gray-200">
-                            <tr>
-                                <td colspan="4" class="text-center py-4 text-gray-500">اضغط على تبويب "إدارة الفيديوهات" للتحميل</td>
-                            </tr>
+                            <tr><td colspan="4" class="text-center py-4 text-gray-500">اضغط على تبويب "إدارة الفيديوهات" للتحميل</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -276,39 +260,96 @@
 
     <div id="codesModal" class="fixed inset-0 z-50 hidden overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
         <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true" onclick="closeCodesModal()"></div>
-            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" onclick="closeCodesModal()"></div>
             <div class="inline-block align-bottom bg-white rounded-lg text-right overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
                 <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                    <h3 class="text-lg leading-6 font-medium text-gray-900 mb-2" id="modal-title">أكواد الفيديو</h3>
-                    <p class="text-sm text-gray-500 mb-4">هذه هي الأكواد المولدة لهذا الفيديو. يمكنك نسخها ولصقها في ملف خارجي.</p>
+                    <h3 class="text-lg leading-6 font-medium text-gray-900 mb-2">أكواد الفيديو</h3>
                     <textarea id="codesArea" rows="10" class="w-full p-2 border border-gray-300 rounded-md font-mono text-sm bg-gray-50 text-left" readonly></textarea>
                 </div>
                 <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                    <button type="button" onclick="copyCodes()" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none sm:ml-3 sm:w-auto sm:text-sm">
-                        نسخ الكل
-                    </button>
-                    <button type="button" onclick="closeCodesModal()" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
-                        إغلاق
-                    </button>
+                    <button type="button" onclick="copyCodes()" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 sm:ml-3 sm:w-auto sm:text-sm">نسخ الكل</button>
+                    <button type="button" onclick="closeCodesModal()" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">إغلاق</button>
                 </div>
             </div>
         </div>
     </div>
+
+    <div id="editQuestionsModal" class="fixed inset-0 z-50 hidden overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" onclick="closeEditQuestionsModal()"></div>
+            <div class="inline-block align-bottom bg-white rounded-lg text-right overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl sm:w-full">
+                
+                <div class="bg-indigo-600 px-4 py-3 sm:px-6 flex justify-between items-center">
+                    <h3 class="text-lg leading-6 font-bold text-white" id="editModalTitle">تعديل أسئلة الامتحان</h3>
+                    <button onclick="closeEditQuestionsModal()" class="text-white hover:text-gray-200 font-bold text-2xl">&times;</button>
+                </div>
+
+                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4 max-h-[70vh] overflow-y-auto">
+                    
+                    <div id="questionsListArea">
+                        <div class="text-center text-gray-500 py-4">جاري تحميل الأسئلة...</div>
+                    </div>
+
+                    <div id="singleQuestionEditForm" class="hidden bg-gray-50 p-4 rounded-lg border border-indigo-200 mt-4">
+                        <h4 class="font-bold text-indigo-700 mb-4 border-b pb-2">تعديل بيانات السؤال</h4>
+                        <input type="hidden" id="editQ_id">
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700">نص السؤال</label>
+                                <textarea id="editQ_text" rows="2" class="w-full p-2 border rounded"></textarea>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                <div><label class="text-xs">أ</label><input type="text" id="editQ_a" class="w-full p-2 border rounded"></div>
+                                <div><label class="text-xs">ب</label><input type="text" id="editQ_b" class="w-full p-2 border rounded"></div>
+                                <div><label class="text-xs">ج</label><input type="text" id="editQ_c" class="w-full p-2 border rounded"></div>
+                                <div><label class="text-xs">د</label><input type="text" id="editQ_d" class="w-full p-2 border rounded"></div>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-sm font-bold">الإجابة الصحيحة</label>
+                                    <select id="editQ_correct" class="w-full p-2 border rounded">
+                                        <option value="A">أ</option>
+                                        <option value="B">ب</option>
+                                        <option value="C">ج</option>
+                                        <option value="D">د</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-bold">الشرح</label>
+                                    <input type="text" id="editQ_explanation" class="w-full p-2 border rounded">
+                                </div>
+                            </div>
+                            <div class="flex justify-end gap-2 mt-4">
+                                <button onclick="cancelSingleEdit()" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 text-gray-800">إلغاء</button>
+                                <button onclick="saveQuestionChanges()" class="px-4 py-2 bg-green-600 rounded hover:bg-green-700 text-white font-bold">حفظ التعديلات</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                
+                <div class="bg-gray-50 px-4 py-3 sm:px-6 flex flex-row-reverse">
+                    <button type="button" onclick="closeEditQuestionsModal()" class="w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 sm:ml-3 sm:w-auto sm:text-sm">إغلاق</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <script>
         // *************************************************************
         // ** ⚠️ يجب استبدال القيم Placeholder بمفاتيحك الحقيقية ⚠️ **
         // *************************************************************
         const SUPABASE_URL = "https://arbbxmnjviryxkmhwdgk.supabase.co";
-        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFyYmJ4bW5qdmlyeXhrbWh3ZGdrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI2OTU1NDEsImV4cCI6MjA3ODI3MTU0MX0.G-MsJtbQ1LlPZO-Vob6nKzdClHmOYu6RFOKi62FKKNk";
-        const SUPABASE_SERVICE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFyYmJ4bW5qdmlyeXhrbWh3ZGdrIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2MjY5NTU0MSwiZXhwIjoyMDc4MjcxNTQxfQ.W5_c_-VqSUhvHmApF_Y4usZfuCwXz0Ci1hxgfO0u8sc"; // المفتاح السري!
+        // لاحظ: نستخدم Service Key لأنه يسمح بالتعديل والقراءة دون قيود للمسؤول
+        const SUPABASE_SERVICE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFyYmJ4bW5qdmlyeXhrbWh3ZGdrIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2MjY5NTU0MSwiZXhwIjoyMDc4MjcxNTQxfQ.W5_c_-VqSUhvHmApF_Y4usZfuCwXz0Ci1hxgfO0u8sc"; 
 
         const TABLE_RESULTS = "quiz_results";
         const TABLE_QUIZZES = "quizzes";
         const TABLE_QUESTIONS = "questions";
         const TABLE_VIDEOS = "videos";
         const TABLE_CODES = "video_codes";
-        const SUPABASE_KEY = SUPABASE_SERVICE_KEY; // تم توحيد الاسم للمفتاح الإداري
+        const SUPABASE_KEY = SUPABASE_SERVICE_KEY; 
 
         // *************************************************************
 
@@ -330,6 +371,8 @@
         const finishQuizBtn = document.getElementById('finishQuizBtn');
 
         let currentQuestionCount = 0;
+        let currentEditingQuizId = null; // لتتبع الامتحان الذي نعدل أسئلته
+        
         const classNamesMap = {
             's1': 'أولى ثانوي',
             's2': 'تانية ثانوي',
@@ -369,7 +412,7 @@
         }
 
         // ------------------------------------------
-        // 2. دوال Supabase المساعدة (لتبسيط العمليات ومعالجة الأخطاء)
+        // 2. دوال Supabase المساعدة
         // ------------------------------------------
         async function sbFetch(tableName, method = 'GET', body = null, select = '*') {
             const options = {
@@ -381,28 +424,28 @@
                 }
             };
             if (body) options.body = JSON.stringify(body);
-            if (method === 'POST') options.headers['Prefer'] = 'return=representation';
+            if (method === 'POST' || method === 'PATCH') options.headers['Prefer'] = 'return=representation';
 
-            // ✅ تصحيح: إضافة أمر الترتيب فقط لجدول الفيديوهات (الذي يحتوي على created_at)
             let url = `${SUPABASE_URL}/rest/v1/${tableName}?select=${select}`;
-            if (method !== 'POST' && (tableName === TABLE_VIDEOS || tableName === TABLE_QUIZZES || tableName === TABLE_RESULTS)) {
+            
+            // إضافة الترتيب للجداول التي تحتوي على حقول زمنية لضمان ظهور الأحدث أولاً
+            if (method === 'GET' && (tableName === TABLE_VIDEOS || tableName === TABLE_QUIZZES || tableName === TABLE_RESULTS)) {
                 url += `&order=created_at.desc`;
             }
-
-            const response = await fetch(url, options);
-
-            // تحسين معالجة الأخطاء
-            if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(`Error ${response.status}: ${errorText || response.statusText}`);
+            // ترتيب الأسئلة حسب id لضمان ثبات الترتيب
+            if (method === 'GET' && tableName === TABLE_QUESTIONS) {
+                url += `&order=id.asc`;
             }
 
-            return method !== 'DELETE' ? await response.json() : null;
+            // التعامل مع Query Parameters (مثل الفلترة) إذا كانت ممررة في url
+            // هنا نمرر url صافي، الفلترة تتم في الدوال الخاصة
+
+            return options; // ملاحظة: تم تعديل الدالة لتعيد options والـ URL يتم بناؤه في الخارج لتعدد الحالات، أو نستخدم fetch مباشرة
         }
 
 
         // -----------------------------------------------------------
-        // 3. إدارة النتائج (عرض النتائج)
+        // 3. إدارة النتائج (عرض النتائج) - نفس الكود السابق
         // -----------------------------------------------------------
         async function fetchResults() {
             resultsTableBody.innerHTML = '<tr><td colspan="7" class="px-6 py-4 text-center text-gray-500">... جاري تحميل النتائج ...</td></tr>';
@@ -438,7 +481,7 @@
 
                 if (!response.ok) throw new Error(`Error ${response.status}: ${response.statusText}`);
 
-                const totalCount = response.headers.get('content-range').split('/')[1];
+                const totalCount = response.headers.get('content-range') ? response.headers.get('content-range').split('/')[1] : 0;
                 const data = await response.json();
 
                 displayResults(data);
@@ -446,7 +489,7 @@
 
             } catch (error) {
                 console.error('Error fetching data from Supabase:', error);
-                resultsTableBody.innerHTML = `<tr><td colspan="7" class="px-6 py-4 text-center text-red-500 font-bold">حدث خطأ في جلب البيانات: ${error.message}. تأكد من استخدام مفتاح الخدمة (Service Key).</td></tr>`;
+                resultsTableBody.innerHTML = `<tr><td colspan="7" class="px-6 py-4 text-center text-red-500 font-bold">حدث خطأ في جلب البيانات: ${error.message}</td></tr>`;
             }
         }
 
@@ -530,14 +573,20 @@
                         <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusColor}">${statusText}</span>
                     </td>
                     <td class="px-4 py-2 text-center whitespace-nowrap">
-                        <button onclick="toggleQuizStatus(${quiz.id}, ${isActive})" class="text-white font-bold py-1 px-3 rounded-md transition ${buttonColor} text-sm">
-                            ${buttonText}
-                        </button>
+                        <div class="flex items-center justify-center gap-2">
+                            <button onclick="toggleQuizStatus(${quiz.id}, ${isActive})" class="text-white font-bold py-1 px-3 rounded-md transition ${buttonColor} text-xs">
+                                ${buttonText}
+                            </button>
+                            <button onclick="openEditQuestionsModal('${quiz.id}', '${quiz.quiz_name}')" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-1 px-3 rounded-md transition text-xs flex items-center gap-1">
+                                ✏️ تعديل الأسئلة
+                            </button>
+                        </div>
                     </td>
                 `;
                 quizListTableBody.appendChild(row);
             });
         }
+
         async function toggleQuizStatus(quizId, currentStatus) {
             if (!confirm(`هل أنت متأكد من تغيير حالة هذا الامتحان؟`)) return;
 
@@ -568,10 +617,13 @@
                 console.error('Error toggling quiz status:', error);
             }
         }
+
+        // إنشاء امتحان جديد
         showNewQuizFormBtn.addEventListener('click', () => {
             newQuizSection.classList.remove('hidden');
             questionAdditionSection.classList.add('hidden');
         });
+
         newQuizForm.addEventListener('submit', async(e) => {
             e.preventDefault();
             const quizName = document.getElementById('newQuizName').value.trim();
@@ -628,6 +680,8 @@
                 button.disabled = false;
             }
         });
+
+        // إضافة سؤال جديد (Flow الإنشاء العادي)
         newQuestionForm.addEventListener('submit', async(e) => {
             e.preventDefault();
 
@@ -647,8 +701,8 @@
                 explanation: document.getElementById('explanation').value.trim()
             };
 
-            if (!questionData.question_text || !questionData.correct_answer || !questionData.choice_a || !questionData.choice_b || !questionData.choice_c || !questionData.choice_d) {
-                alert("الرجاء ملء جميع حقول السؤال والاختيارات واختيار الإجابة الصحيحة.");
+            if (!questionData.question_text || !questionData.correct_answer) {
+                alert("الرجاء ملء جميع الحقول المطلوبة.");
                 button.textContent = 'حفظ السؤال والانتقال للسؤال التالي';
                 button.disabled = false;
                 return;
@@ -683,6 +737,7 @@
                 button.disabled = false;
             }
         });
+
         finishQuizBtn.addEventListener('click', () => {
             if (currentQuestionCount === 0) {
                 if (!confirm("لم يتم إضافة أي أسئلة لهذا الامتحان. هل تريد إنهاء العملية والعودة؟")) return;
@@ -697,25 +752,177 @@
             alert('تم إنهاء عملية إضافة الأسئلة بنجاح. يمكنك تفعيل الامتحان من القائمة.');
         });
 
+
+        // -----------------------------------------------------------
+        // 5. NEW: منطق تعديل الأسئلة (الميزة الجديدة)
+        // -----------------------------------------------------------
+
+        // فتح المودال وجلب الأسئلة
+        window.openEditQuestionsModal = async function(quizId, quizName) {
+            currentEditingQuizId = quizId;
+            document.getElementById('editModalTitle').textContent = `تعديل أسئلة: ${quizName}`;
+            document.getElementById('editQuestionsModal').classList.remove('hidden');
+            document.getElementById('questionsListArea').classList.remove('hidden');
+            document.getElementById('singleQuestionEditForm').classList.add('hidden');
+            
+            await fetchQuestionsForQuiz(quizId);
+        }
+
+        window.closeEditQuestionsModal = function() {
+            document.getElementById('editQuestionsModal').classList.add('hidden');
+            // عند الإغلاق نحدث جدول الامتحانات لتحديث عدد الأسئلة في حال تم التعديل
+            fetchQuizzes();
+        }
+
+        // جلب الأسئلة وعرضها
+        async function fetchQuestionsForQuiz(quizId) {
+            const listArea = document.getElementById('questionsListArea');
+            listArea.innerHTML = '<div class="text-center py-4">⏳ جاري تحميل الأسئلة...</div>';
+
+            try {
+                // ترتيب حسب ID للحفاظ على النظام
+                const url = `${SUPABASE_URL}/rest/v1/${TABLE_QUESTIONS}?quiz_id=eq.${quizId}&order=id.asc`;
+                const response = await fetch(url, {
+                    method: 'GET',
+                    headers: {
+                        'apikey': SUPABASE_SERVICE_KEY,
+                        'Authorization': `Bearer ${SUPABASE_SERVICE_KEY}`
+                    }
+                });
+                
+                if (!response.ok) throw new Error(response.statusText);
+                const questions = await response.json();
+
+                renderQuestionsList(questions);
+
+            } catch (e) {
+                listArea.innerHTML = `<div class="text-red-500 text-center">خطأ: ${e.message}</div>`;
+            }
+        }
+
+        // رسم قائمة الأسئلة داخل المودال
+        function renderQuestionsList(questions) {
+            const listArea = document.getElementById('questionsListArea');
+            if (questions.length === 0) {
+                listArea.innerHTML = '<div class="text-center text-gray-500 py-6">لا توجد أسئلة مسجلة لهذا الامتحان.</div>';
+                return;
+            }
+
+            let html = `<div class="space-y-3">`;
+            questions.forEach((q, idx) => {
+                html += `
+                    <div class="bg-gray-100 p-3 rounded-lg flex flex-col md:flex-row justify-between items-center gap-3 border border-gray-200">
+                        <div class="flex-1">
+                            <span class="font-bold text-indigo-600 ml-2">س${idx + 1}:</span>
+                            <span class="text-gray-800 text-sm font-semibold">${q.question_text}</span>
+                            <div class="text-xs text-gray-500 mt-1 flex gap-2">
+                                <span class="${q.correct_answer === 'A' ? 'text-green-600 font-bold' : ''}">أ: ${q.choice_a}</span> |
+                                <span class="${q.correct_answer === 'B' ? 'text-green-600 font-bold' : ''}">ب: ${q.choice_b}</span> |
+                                <span class="${q.correct_answer === 'C' ? 'text-green-600 font-bold' : ''}">ج: ${q.choice_c}</span> |
+                                <span class="${q.correct_answer === 'D' ? 'text-green-600 font-bold' : ''}">د: ${q.choice_d}</span>
+                            </div>
+                        </div>
+                        <button onclick='editSpecificQuestion(${JSON.stringify(q)})' class="bg-blue-600 hover:bg-blue-700 text-white text-xs py-2 px-4 rounded font-bold shadow transition whitespace-nowrap">
+                            تعديل السؤال
+                        </button>
+                    </div>
+                `;
+            });
+            html += `</div>`;
+            listArea.innerHTML = html;
+        }
+
+        // عرض نموذج التعديل لسؤال معين
+        window.editSpecificQuestion = function(q) {
+            // إخفاء القائمة وإظهار النموذج
+            document.getElementById('questionsListArea').classList.add('hidden');
+            const formDiv = document.getElementById('singleQuestionEditForm');
+            formDiv.classList.remove('hidden');
+
+            // تعبئة البيانات
+            document.getElementById('editQ_id').value = q.id;
+            document.getElementById('editQ_text').value = q.question_text;
+            document.getElementById('editQ_a').value = q.choice_a;
+            document.getElementById('editQ_b').value = q.choice_b;
+            document.getElementById('editQ_c').value = q.choice_c;
+            document.getElementById('editQ_d').value = q.choice_d;
+            document.getElementById('editQ_correct').value = q.correct_answer;
+            document.getElementById('editQ_explanation').value = q.explanation || '';
+        }
+
+        // إلغاء التعديل والعودة للقائمة
+        window.cancelSingleEdit = function() {
+            document.getElementById('singleQuestionEditForm').classList.add('hidden');
+            document.getElementById('questionsListArea').classList.remove('hidden');
+        }
+
+        // حفظ تعديلات السؤال
+        window.saveQuestionChanges = async function() {
+            const qId = document.getElementById('editQ_id').value;
+            const updatedData = {
+                question_text: document.getElementById('editQ_text').value.trim(),
+                choice_a: document.getElementById('editQ_a').value.trim(),
+                choice_b: document.getElementById('editQ_b').value.trim(),
+                choice_c: document.getElementById('editQ_c').value.trim(),
+                choice_d: document.getElementById('editQ_d').value.trim(),
+                correct_answer: document.getElementById('editQ_correct').value,
+                explanation: document.getElementById('editQ_explanation').value.trim()
+            };
+
+            if (!updatedData.question_text || !updatedData.choice_a || !updatedData.choice_b) {
+                alert("يرجى ملء البيانات الأساسية للسؤال");
+                return;
+            }
+
+            if(!confirm("هل أنت متأكد من حفظ التعديلات؟")) return;
+
+            try {
+                const url = `${SUPABASE_URL}/rest/v1/${TABLE_QUESTIONS}?id=eq.${qId}`;
+                const response = await fetch(url, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'apikey': SUPABASE_SERVICE_KEY,
+                        'Authorization': `Bearer ${SUPABASE_SERVICE_KEY}`
+                    },
+                    body: JSON.stringify(updatedData)
+                });
+
+                if (!response.ok) throw new Error(response.statusText);
+
+                alert("تم تحديث السؤال بنجاح!");
+                
+                // العودة للقائمة وتحديثها
+                cancelSingleEdit(); 
+                fetchQuestionsForQuiz(currentEditingQuizId);
+
+            } catch (error) {
+                alert("فشل التحديث: " + error.message);
+                console.error(error);
+            }
+        }
+
+
         // ------------------------------------------
-        // 5. منطق إدارة الفيديوهات (الجديد)
+        // 6. منطق إدارة الفيديوهات (موجود مسبقاً)
         // ------------------------------------------
 
-        // 5.1 دالة تحويل الرابط إلى Embed ID
         function extractYoutubeId(url) {
             const regex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
             const match = url.match(regex);
             return (match && match[1].length === 11) ? match[1] : url.trim();
         }
 
-        // 5.2 جلب وعرض الفيديوهات في الجدول
         async function fetchVideos() {
             const tbody = document.getElementById('videosTableBody');
             tbody.innerHTML = '<tr><td colspan="4" class="text-center py-4 text-purple-600 animate-pulse">... جاري تحميل الفيديوهات ...</td></tr>';
 
             try {
-                // استخدام sbFetch لجدول الفيديوهات (الذي يحتوي على created_at)
-                const videos = await sbFetch(TABLE_VIDEOS, 'GET', null, '*');
+                const videosData = await fetch(`${SUPABASE_URL}/rest/v1/${TABLE_VIDEOS}?select=*&order=created_at.desc`, {
+                    headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+                });
+                if(!videosData.ok) throw new Error("Fetch Error");
+                const videos = await videosData.json();
 
                 tbody.innerHTML = '';
                 if (videos.length === 0) {
@@ -744,7 +951,6 @@
             }
         }
 
-        // 5.3 دالة توليد الأكواد وإضافة الفيديو
         document.getElementById('addVideoForm').addEventListener('submit', async(e) => {
             e.preventDefault();
             const btn = document.getElementById('addVideoBtn');
@@ -753,8 +959,6 @@
             const name = document.getElementById('videoName').value;
             const rawLink = document.getElementById('videoLink').value;
             const className = document.getElementById('videoClass').value;
-
-            // استخدام الدالة الجديدة لاستخراج ID الفيديو
             const link = extractYoutubeId(rawLink);
 
             if (link.length !== 11) {
@@ -762,44 +966,47 @@
                 return;
             }
 
-
             btn.disabled = true;
             btn.textContent = '⏳ جاري الحفظ وتوليد 1000 كود... قد يستغرق الأمر بضع ثوانٍ';
 
             try {
-                // 1. إضافة الفيديو والحصول على الـ ID
-                const videoData = await sbFetch(TABLE_VIDEOS, 'POST', {
-                    video_name: name,
-                    video_link: link, // سيتم تخزين الـ ID القصير هنا
-                    class_name: className
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/${TABLE_VIDEOS}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'apikey': SUPABASE_SERVICE_KEY,
+                        'Authorization': `Bearer ${SUPABASE_SERVICE_KEY}`,
+                        'Prefer': 'return=representation'
+                    },
+                    body: JSON.stringify({ video_name: name, video_link: link, class_name: className })
                 });
 
-                // التحقق الإلزامي من الـ ID المُرجع
-                if (!videoData || videoData.length === 0 || !videoData[0].id) {
-                    throw new Error("فشل في الحصول على معرّف الفيديو (Video ID) بعد الحفظ. تحقق من سياسات RLS.");
-                }
-
+                if (!response.ok) throw new Error("Error creating video");
+                const videoData = await response.json();
                 const newVideoId = videoData[0].id;
 
-                // 2. توليد 1000 كود في المتصفح
                 const codesPayload = [];
                 for (let i = 0; i < 1000; i++) {
                     const code = Math.random().toString(36).substring(2, 8).toUpperCase();
-                    codesPayload.push({
-                        video_id: newVideoId,
-                        code: code
-                    });
+                    codesPayload.push({ video_id: newVideoId, code: code });
                 }
 
-                // 3. إرسال الأكواد دفعة واحدة (Bulk Insert)
-                await sbFetch(TABLE_CODES, 'POST', codesPayload, '*'); // استخدام * لتخطي الفرز في جدول الأكواد
+                await fetch(`${SUPABASE_URL}/rest/v1/${TABLE_CODES}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'apikey': SUPABASE_SERVICE_KEY,
+                        'Authorization': `Bearer ${SUPABASE_SERVICE_KEY}`
+                    },
+                    body: JSON.stringify(codesPayload)
+                });
 
                 alert('✅ تم إضافة الفيديو وتوليد 1000 كود بنجاح!');
                 document.getElementById('addVideoForm').reset();
                 fetchVideos();
 
             } catch (error) {
-                alert('فشل في العملية: ' + error.message + '. تأكد من إعداد جداول Supabase بشكل صحيح.');
+                alert('فشل في العملية: ' + error.message);
                 console.error(error);
             } finally {
                 btn.disabled = false;
@@ -807,7 +1014,6 @@
             }
         });
 
-        // 5.4 عرض الأكواد في المودال
         window.viewCodes = async function(videoId) {
             const modal = document.getElementById('codesModal');
             const area = document.getElementById('codesArea');
@@ -815,19 +1021,12 @@
             modal.classList.remove('hidden');
 
             try {
-                // جلب الأكواد مباشرة لضمان عدم تأثر الاستعلام بالترتيب العام
                 const codesResponse = await fetch(`${SUPABASE_URL}/rest/v1/${TABLE_CODES}?select=code&video_id=eq.${videoId}`, {
                     method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'apikey': SUPABASE_KEY,
-                        'Authorization': `Bearer ${SUPABASE_KEY}`,
-                    }
+                    headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
                 });
                 if (!codesResponse.ok) throw new Error(codesResponse.statusText);
                 const codes = await codesResponse.json();
-
-
                 const codesText = codes.map(c => c.code).join('\n');
                 area.value = codesText;
             } catch (error) {
@@ -836,7 +1035,6 @@
             }
         }
 
-        // 5.5 نسخ الأكواد
         window.copyCodes = function() {
             const area = document.getElementById('codesArea');
             area.select();
@@ -844,27 +1042,21 @@
             alert("تم نسخ جميع الأكواد للحافظة!");
         }
 
-        // 5.6 إغلاق المودال
         window.closeCodesModal = function() {
             document.getElementById('codesModal').classList.add('hidden');
         }
 
-        // 5.7 دالة الحذف
         window.deleteVideo = async function(id) {
             if (!confirm("هل أنت متأكد من حذف هذا الفيديو؟ سيتم حذف جميع الأكواد الـ 1000 المرتبطة به بشكل نهائي!")) return;
             try {
                 await fetch(`${SUPABASE_URL}/rest/v1/${TABLE_VIDEOS}?id=eq.${id}`, {
                     method: 'DELETE',
-                    headers: {
-                        'apikey': SUPABASE_KEY,
-                        'Authorization': `Bearer ${SUPABASE_KEY}`
-                    }
+                    headers: { 'apikey': SUPABASE_SERVICE_KEY, 'Authorization': `Bearer ${SUPABASE_SERVICE_KEY}` }
                 });
                 alert("✅ تم حذف الفيديو والأكواد بنجاح.");
                 fetchVideos();
             } catch (e) {
                 alert("❌ فشل في الحذف. راجع Console.");
-                console.error('Error deleting video:', e);
             }
         }
 
@@ -876,7 +1068,7 @@
 
         // التحميل المبدئي
         document.addEventListener('DOMContentLoaded', () => {
-            window.showTab('results'); // البدء بعرض النتائج
+            window.showTab('results'); 
         });
     </script>
 </body>
